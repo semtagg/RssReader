@@ -12,6 +12,10 @@ namespace RssReader
 {
     public partial class RssUi : Form
     {
+        private LinkLabel linkLabel1;
+        private Button label2;
+        private WebBrowser webBrowser1;
+
         public RssUi()
         {
             AutoScaleMode = AutoScaleMode.Font;

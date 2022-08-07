@@ -15,128 +15,120 @@ namespace RssReader
 {
     partial class RssUi
     {
-        /// <summary>
-        ///  Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        ///  Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-
-            base.Dispose(disposing);
-        }
-
         private DataGridView dataGridView;
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            DoubleBuffered = true;
-            /*var table = new TableLayoutPanel();
-            table.RowStyles.Clear();*/
-
-            dataGridView = new DataGridView();
-            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells; 
-            
-            
-            dataGridView.Columns.Add("Title", "Заголовок статьи"); 
-            dataGridView.Columns.Add("Date", "Дата публикации");
-            dataGridView.Columns.Add("Discription", "Описание статьи");
-            dataGridView.Columns.Add(new DataGridViewLinkColumn()
-                {
-                    HeaderText = "Link",
-                    Name = "https://www.youtube.com/watch?v=R_5LA7ihasQ&t=539s&ab_channel=ProgrammingWizardsTV",
-                    Text = "Fuck",
-                    UseColumnTextForLinkValue = true
-                });
-            dataGridView.CellContentClick += dataGridView_CellContentClick;
-            
-            dataGridView.Columns["Title"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dataGridView.Columns["Title"].Width = ClientSize.Width / 2;
-            dataGridView.Columns["Date"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dataGridView.Columns["Date"].Width = ClientSize.Width / 10;
+           
+           //  SizeChanged += (sender, args) =>
+           //  {
+           //      dataGridView.Columns["Title"].Width = ClientSize.Width / 2;
+           //      dataGridView.Columns["Date"].Width = ClientSize.Width / 3;
+           //
+           //  };
+           //
+           //  Load += (sender, args) => OnSizeChanged(EventArgs.Empty);
+           
 
             string url = "https://habr.com/ru/rss/interesting/";
             XmlReader reader = XmlReader.Create(url);
             SyndicationFeed feed = SyndicationFeed.Load(reader);
             reader.Close();
+            var count = feed.Items.Count();
 
+
+            var table = new TableLayoutPanel();
+            table.RowStyles.Clear();
+
+            for (int i = 0; i <= count; i++)
+            {
+                table.RowStyles.Add(new RowStyle(SizeType.Percent, 100/count));
+            }
+
+            var fst = new ColumnStyle(SizeType.Percent, 33);
+            table.ColumnStyles.Add(fst);
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+
+            var index = 1;
             foreach (SyndicationItem item in feed.Items)
             {
-                /*var dataGridViewRow = new DataGridViewRow();
-                dataGridViewRow.CreateCells(dataGridView);
-                dataGridViewRow.Cells[0] = new DataGridViewLinkCell()
+                linkLabel1 = new LinkLabel
                 {
-                    Value = item.Links
-                };*/
-                /*item.PublishDate.ToString("yy-MM-dd HH:mm:ss")*/
-                dataGridView.Rows.Add( item.Title.Text, "https://habr.com/ru/rss/interesting/");
+                    Text = item.Title.Text,
+                    Dock = DockStyle.Fill,
+                    BorderStyle = BorderStyle.Fixed3D
+                };
+                linkLabel1.Links.Add(new LinkLabel.Link(0,linkLabel1.Text.Length,item.Links[0].Uri.ToString())); 
                 
+                var label1 = new Label
+                {
+                    Text = item.PublishDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Dock = DockStyle.Fill,
+                    BorderStyle = BorderStyle.Fixed3D
+                };
+                label2 = new Button
+                {
+                    Text = "Показать",
+                    Dock = DockStyle.Fill,
+                };
+
+                table.Controls.Add(linkLabel1, 0, index);
+                table.Controls.Add(label1, 1, index);
+                table.Controls.Add(label2, 2, index);
+                
+                linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+                
+                
+                /*label2.MouseClick += (sender, args) 
+                    => MessageBox.Show($"{item.Summary.Text}", "Подробное описание");*/
+                label2.MouseClick += (sender, args)
+                    => new Discription(item.Summary.Text).Show();
+
+                index++;
             }
-            
-            foreach (DataGridViewRow row in dataGridView.Rows)
+           
+            /*table.Controls.Add(new Panel(), 0, 0);
+           table.Controls.Add(label, 0, 1);
+           table.Controls.Add(box, 0, 2);
+           table.Controls.Add(button, 0, 3);
+           table.Controls.Add(new Panel(), 0, 4);*/
+
+           
+           
+           
+           
+           table.Dock = DockStyle.Fill;
+           Controls.Add(table);
+           
+          // button.Click += (sender, args) => box.Text = (int.Parse(box.Text) + 1).ToString();
+          
+        }
+        private void webBrowser1_Navigating(object sender, 
+            WebBrowserNavigatingEventArgs e)
+        {
+            System.Windows.Forms.HtmlDocument document =
+                this.webBrowser1.Document;
+
+            if (document != null && document.All["userName"] != null && 
+                String.IsNullOrEmpty(
+                    document.All["userName"].GetAttribute("value")))
             {
-                DataGridViewLinkCell linkCell = new DataGridViewLinkCell();
-                linkCell.Value = row.Cells[1].Value;
-                row.Cells[1] = linkCell;
+                e.Cancel = true;
+                System.Windows.Forms.MessageBox.Show(
+                    "You must enter your name before you can navigate to " +
+                    e.Url.ToString());
             }
+        }
 
-            var label = new Label
-            {
-                Text = "Enter a number",
-                Dock = DockStyle.Fill
-            };
-            var box = new TextBox
-            {
-                Dock = DockStyle.Fill,
-            };
-            var button = new Button
-            {
-                Text = "Increment!",
-                Dock = DockStyle.Fill
-            };
-
-            /*table.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
-            table.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
-            table.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
-            table.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
-            table.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
-            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-
-            table.Controls.Add(new Panel(), 0, 0);
-            table.Controls.Add(label, 0, 1);
-            table.Controls.Add(box, 0, 2);
-            table.Controls.Add(button, 0, 3);
-            table.Controls.Add(new Panel(), 0, 4);*/
-
-            dataGridView.Dock = DockStyle.Fill;
-            Controls.Add(dataGridView);
-
-           //button.Click += (sender, args) => box.Text = (int.Parse(box.Text) + 1).ToString();
-            
-            SizeChanged += (sender, args) =>
-            {
-                dataGridView.Columns["Title"].Width = ClientSize.Width / 2;
-                dataGridView.Columns["Date"].Width = ClientSize.Width / 3;
-
-            };
-
-            Load += (sender, args) => OnSizeChanged(EventArgs.Empty);
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var target = e.Link.LinkData as string;
+            Process.Start(new ProcessStartInfo("cmd", $"/c start {target}"));
         }
         
-        private void dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e) 
+        private void linkLabel1_LinkClicked(object sender, MouseEventArgs e)
         {
-            Process.Start("explorer", "http://google.com");
+           
         }
     }
 }

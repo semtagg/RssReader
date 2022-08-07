@@ -14,6 +14,9 @@ namespace RssReader
     {
         public RssUi()
         {
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Text = "RssReader";
             InitializeComponent();
         }
     }

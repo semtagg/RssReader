@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using System.ServiceModel.Syndication;
+using System.Diagnostics;
 
 namespace RssReader
 {
@@ -44,14 +46,34 @@ namespace RssReader
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Text = "Discription";*/
-            webBrowser1 = new WebBrowser();
-            webBrowser1.DocumentText =
-                "<html><body>Please enter your name:<br/>" +
-                "<input type='text' name='userName'/><br/>" +
-                "<a href='http://www.microsoft.com'>continue</a>" +
-                "</body></html>";
-            webBrowser1.Navigating += 
-                new WebBrowserNavigatingEventHandler(webBrowser1_Navigating);
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.SuspendLayout();
+            // 
+            // webBrowser1
+            // 
+            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Size = new System.Drawing.Size(334, 311);
+            this.webBrowser1.TabIndex = 1;
+            this.webBrowser1.DocumentText = text;
+            webBrowser1.Navigating += (sender, args) =>
+            {
+                Process.Start(new ProcessStartInfo("cmd", $"/c start {args.Url.ToString()}"));
+                args.Cancel = true;
+            };
+            // 
+        // Form1
+        // 
+        this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(334, 311);
+            this.Controls.Add(this.webBrowser1);
+            this.Name = "Form1";
+            this.Text = "Form1";
+            //this.Load += new System.EventHandler(this.Form1_Load);
+            this.ResumeLayout(false);
         }
         private void webBrowser1_Navigating(object sender, 
             WebBrowserNavigatingEventArgs e)
@@ -69,7 +91,13 @@ namespace RssReader
                     e.Url.ToString());
             }
         }
-
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            string html = "<font face='arial' size='3'>Hello,<br />My name is ";
+            html += "<b style = 'color:red'>Mudassar Khan</b>.</font>";
+            html += "<hr /><img src='https://www.aspsnippets.com/images/authors/Mudassar.png' />";
+            webBrowser1.DocumentText = html;
+        }
         #endregion
     }
 }

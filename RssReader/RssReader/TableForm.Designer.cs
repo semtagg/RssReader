@@ -10,24 +10,17 @@ using System.Windows.Forms;
 using System.Xml;
 using System.ServiceModel.Syndication;
 using System.Diagnostics;
+using System.IO;
+using System.Text.Json;
 
 namespace RssReader
 {
     partial class TableForm
     {
-        private DataGridView dataGridView;
         private void InitializeComponent()
         {
-           
-           //  SizeChanged += (sender, args) =>
-           //  {
-           //      dataGridView.Columns["Title"].Width = ClientSize.Width / 2;
-           //      dataGridView.Columns["Date"].Width = ClientSize.Width / 3;
-           //
-           //  };
-           //
-           //  Load += (sender, args) => OnSizeChanged(EventArgs.Empty);
-           
+            var jsonString = File.ReadAllText("config.json");
+            configurationModel = JsonSerializer.Deserialize<ConfigurationModel>(jsonString);
 
             string url = "https://habr.com/ru/rss/interesting/";
             XmlReader reader = XmlReader.Create(url);
@@ -96,7 +89,7 @@ namespace RssReader
            
            
             System.Windows.Forms.Timer timer1 = new System.Windows.Forms.Timer();
-            timer1.Interval=5000;//5 seconds
+            timer1.Interval = configurationModel.RefreshTimeInMinutes * 1000;//5 seconds
             timer1.Tick += timer1_Tick;
             timer1.Start();
            

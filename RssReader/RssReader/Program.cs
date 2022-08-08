@@ -17,7 +17,7 @@ namespace RssReader
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new RssUi());
+            Application.Run(new TableForm());
         }
     }
 }

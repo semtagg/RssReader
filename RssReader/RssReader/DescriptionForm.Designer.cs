@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace RssReader
 {
-    partial class Discription
+    partial class Description
     {
         /// <summary>
         /// Required designer variable.
@@ -45,7 +45,7 @@ namespace RssReader
             /*this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Discription";*/
+            this.Text = "Description";*/
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.SuspendLayout();
             // 

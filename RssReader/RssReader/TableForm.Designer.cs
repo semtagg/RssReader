@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace RssReader
 {
-    partial class RssUi
+    partial class TableForm
     {
         private DataGridView dataGridView;
         private void InitializeComponent()
@@ -82,7 +82,7 @@ namespace RssReader
                 /*label2.MouseClick += (sender, args) 
                     => MessageBox.Show($"{item.Summary.Text}", "Подробное описание");*/
                 label2.MouseClick += (sender, args)
-                    => new Discription(item.Summary.Text).Show();
+                    => new Description(item.Summary.Text).Show();
 
                 index++;
             }
@@ -152,7 +152,7 @@ namespace RssReader
                 /*label2.MouseClick += (sender, args) 
                     => MessageBox.Show($"{item.Summary.Text}", "Подробное описание");*/
                 label2.MouseClick += (sender, args)
-                    => new Discription(item.Summary.Text).Show();
+                    => new Description(item.Summary.Text).Show();
 
                 index++;
             }

@@ -2,11 +2,11 @@
 
 namespace RssReader
 {
-    public partial class Discription : Form
+    public partial class Description : Form
     {
         private WebBrowser webBrowser1;
 
-        public Discription(string text)
+        public Description(string text)
         {
             InitializeComponent(text);
         }

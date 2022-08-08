@@ -15,6 +15,7 @@ namespace RssReader
         private LinkLabel linkLabel1;
         private Button label2;
         private WebBrowser webBrowser1;
+        private TableLayoutPanel table;
 
         public RssUi()
         {

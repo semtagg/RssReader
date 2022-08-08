@@ -36,7 +36,7 @@ namespace RssReader
             var count = feed.Items.Count();
 
 
-            var table = new TableLayoutPanel();
+            table = new TableLayoutPanel();
             table.RowStyles.Clear();
 
             for (int i = 0; i <= count; i++)
@@ -95,7 +95,10 @@ namespace RssReader
 
            
            
-           
+            System.Windows.Forms.Timer timer1 = new System.Windows.Forms.Timer();
+            timer1.Interval=5000;//5 seconds
+            timer1.Tick += timer1_Tick;
+            timer1.Start();
            
            table.Dock = DockStyle.Fill;
            Controls.Add(table);
@@ -103,6 +106,58 @@ namespace RssReader
           // button.Click += (sender, args) => box.Text = (int.Parse(box.Text) + 1).ToString();
           
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            while (table.Controls.Count > 0)
+            {
+                table.Controls[0].Dispose();
+            }
+            table.Controls.Clear();
+            string url = "https://habr.com/ru/rss/interesting/";
+            XmlReader reader = XmlReader.Create(url);
+            SyndicationFeed feed = SyndicationFeed.Load(reader);
+            reader.Close();
+            var count = feed.Items.Count();
+            var index = 1;
+            foreach (SyndicationItem item in feed.Items)
+            {
+                linkLabel1 = new LinkLabel
+                {
+                    Text = item.Title.Text,
+                    Dock = DockStyle.Fill,
+                    BorderStyle = BorderStyle.Fixed3D
+                };
+                linkLabel1.Links.Add(new LinkLabel.Link(0,linkLabel1.Text.Length,item.Links[0].Uri.ToString())); 
+                
+                var label1 = new Label
+                {
+                    Text = item.PublishDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Dock = DockStyle.Fill,
+                    BorderStyle = BorderStyle.Fixed3D
+                };
+                label2 = new Button
+                {
+                    Text = "Показать",
+                    Dock = DockStyle.Fill,
+                };
+
+                table.Controls.Add(linkLabel1, 0, index);
+                table.Controls.Add(label1, 1, index);
+                table.Controls.Add(label2, 2, index);
+                
+                linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+                
+                
+                /*label2.MouseClick += (sender, args) 
+                    => MessageBox.Show($"{item.Summary.Text}", "Подробное описание");*/
+                label2.MouseClick += (sender, args)
+                    => new Discription(item.Summary.Text).Show();
+
+                index++;
+            }
+        }
+        
         private void webBrowser1_Navigating(object sender, 
             WebBrowserNavigatingEventArgs e)
         {

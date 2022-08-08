@@ -17,6 +17,7 @@ namespace RssReader
         private WebBrowser webBrowser1;
         private TableLayoutPanel table;
         private ConfigurationModel configurationModel;
+        private MenuStrip mainMenu;
 
         public TableForm()
         {

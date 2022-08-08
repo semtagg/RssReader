@@ -17,24 +17,54 @@ namespace RssReader
 {
     partial class TableForm
     {
+        string url = "https://habr.com/ru/rss/interesting/"; //https://www.nasa.gov/rss/dyn/breaking_news.rss
         private void InitializeComponent()
         {
             var jsonString = File.ReadAllText("config.json");
             configurationModel = JsonSerializer.Deserialize<ConfigurationModel>(jsonString);
 
-            string url = "https://habr.com/ru/rss/interesting/";
+            var interval = configurationModel.RefreshTimeInMinutes * 1000;
+           
             XmlReader reader = XmlReader.Create(url);
             SyndicationFeed feed = SyndicationFeed.Load(reader);
             reader.Close();
             var count = feed.Items.Count();
 
 
+            mainMenu = new MenuStrip();
+            mainMenu.Location = new Point(0,0);
+            var menuItem1 = new ToolStripMenuItem()
+            {
+                Text = "Изменить ленту",
+                Tag = "Edit Feed"
+            };
+            menuItem1.Click += (sender, args) =>
+            {
+                using (var frm = new InputBoxForm("Введите ссылку:"))
+                {
+                    if (frm.ShowDialog() == DialogResult.OK)
+                        url = frm.Input;
+                }
+            };
+
+
+            var menuItem2 = new ToolStripMenuItem()
+            {
+                Text = "Изменить частоту обновления",
+                Tag = "Edit Refresh Time"
+            };
+            
+
+            mainMenu.Items.Add(menuItem1);
+            mainMenu.Items.Add(menuItem2);
+
             table = new TableLayoutPanel();
+            table.AutoScroll = true;
             table.RowStyles.Clear();
 
             for (int i = 0; i <= count; i++)
             {
-                table.RowStyles.Add(new RowStyle(SizeType.Percent, 100/count));
+                table.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
             }
 
             var fst = new ColumnStyle(SizeType.Percent, 33);
@@ -87,14 +117,22 @@ namespace RssReader
            table.Controls.Add(new Panel(), 0, 4);*/
 
            
-           
             System.Windows.Forms.Timer timer1 = new System.Windows.Forms.Timer();
-            timer1.Interval = configurationModel.RefreshTimeInMinutes * 1000;//5 seconds
+            timer1.Interval = interval;
             timer1.Tick += timer1_Tick;
             timer1.Start();
            
-           table.Dock = DockStyle.Fill;
-           Controls.Add(table);
+            menuItem2.Click += (sender, args) =>
+            {
+                using (var frm = new InputBoxForm("Введите новую чатоту:"))
+                {
+                    if (frm.ShowDialog() == DialogResult.OK)
+                        timer1.Interval = 1000 * int.Parse(frm.Input);
+                }
+            };
+            table.Dock = DockStyle.Fill;
+            Controls.Add(table);
+            Controls.Add(mainMenu);
            
           // button.Click += (sender, args) => box.Text = (int.Parse(box.Text) + 1).ToString();
           
@@ -107,7 +145,6 @@ namespace RssReader
                 table.Controls[0].Dispose();
             }
             table.Controls.Clear();
-            string url = "https://habr.com/ru/rss/interesting/";
             XmlReader reader = XmlReader.Create(url);
             SyndicationFeed feed = SyndicationFeed.Load(reader);
             reader.Close();

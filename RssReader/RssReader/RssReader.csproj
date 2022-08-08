@@ -11,15 +11,18 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="DescriptionForm.cs">
-        <SubType>Form</SubType>
-      </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="config.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Forms\DescriptionForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="Forms\InputBoxForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
     </ItemGroup>
 
 </Project>

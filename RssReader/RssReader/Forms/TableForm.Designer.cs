@@ -42,8 +42,12 @@ namespace RssReader
             {
                 using (var frm = new InputBoxForm("Введите ссылку:"))
                 {
-                    if (frm.ShowDialog() == DialogResult.OK)
+                    var x = frm.ShowDialog();
+                    if (x == DialogResult.OK)
                         url = frm.Input;
+                    
+                    if (x == DialogResult.Yes)
+                        new TableForm().Show();
                 }
             };
 
@@ -53,7 +57,7 @@ namespace RssReader
                 Text = "Изменить частоту обновления",
                 Tag = "Edit Refresh Time"
             };
-            
+
 
             mainMenu.Items.Add(menuItem1);
             mainMenu.Items.Add(menuItem2);

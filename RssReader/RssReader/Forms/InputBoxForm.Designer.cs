@@ -55,14 +55,21 @@ namespace RssReader
             };
             var button = new Button
             {
-                Text = "Ok",
+                Text = "Изменить эту",
                 Dock = DockStyle.Fill,
                 DialogResult = DialogResult.OK
+            };
+            var button1 = new Button
+            {
+                Text = "Добавить новую ленту",
+                Dock = DockStyle.Fill,
+                DialogResult = DialogResult.Yes
             };
 
             var table = new TableLayoutPanel();
             table.RowStyles.Clear();
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+            table.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
             table.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
             table.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
             table.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
@@ -73,7 +80,8 @@ namespace RssReader
             table.Controls.Add(label, 0, 1);
             table.Controls.Add(box, 0, 2);
             table.Controls.Add(button, 0, 3);
-            table.Controls.Add(new Panel(), 0, 4);
+            table.Controls.Add(button1, 0, 4);
+            table.Controls.Add(new Panel(), 0, 5);
 
             table.Dock = DockStyle.Fill;
             Controls.Add(table);

@@ -38,32 +38,7 @@ namespace RssReader
             Controls.Add(this.webBrowser);
             Name = "Description";
             Text = "Description";
-            //this.Load += new System.EventHandler(this.Form1_Load);
             ResumeLayout(false);
-        }
-        private void webBrowser1_Navigating(object sender, 
-            WebBrowserNavigatingEventArgs e)
-        {
-            System.Windows.Forms.HtmlDocument document =
-                this.webBrowser.Document;
-
-            if (document != null && document.All["userName"] != null && 
-                String.IsNullOrEmpty(
-                    document.All["userName"].GetAttribute("value")))
-            {
-                e.Cancel = true;
-                System.Windows.Forms.MessageBox.Show(
-                    "You must enter your name before you can navigate to " +
-                    e.Url.ToString());
-            }
-        }
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            string html = "<font face='arial' size='3'>Hello,<br />My name is ";
-            html += "<b style = 'color:red'>Mudassar Khan</b>.</font>";
-            html += "<hr /><img src='https://www.aspsnippets.com/images/authors/Mudassar.png' />";
-            webBrowser.DocumentText = html;
         }
     }
 }
-

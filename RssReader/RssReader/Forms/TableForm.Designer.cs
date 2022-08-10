@@ -19,44 +19,40 @@ namespace RssReader
     {
         private void ShowTable()
         {
-            var index = 1;
-            foreach (SyndicationItem item in rssFeed.Feed.Items)
+            var items = rssFeed.Feed.Items.ToArray(); // to array
+            for (var i = 0; i < items.Length; i++)
             {
-                linkLabel = new LinkLabel
+                var title = new LinkLabel
                 {
-                    Text = item.Title.Text,
+                    Text = items[i].Title.Text,
                     Dock = DockStyle.Fill,
                     BorderStyle = BorderStyle.Fixed3D
                 };
-                linkLabel.Links.Add(new LinkLabel.Link(0,linkLabel.Text.Length,item.Links[0].Uri.ToString())); 
-                
-                var label1 = new Label
-                {
-                    Text = item.PublishDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                    Dock = DockStyle.Fill,
-                    BorderStyle = BorderStyle.Fixed3D
-                };
-                var label2 = new Button
-                {
-                    Text = "Показать",
-                    Dock = DockStyle.Fill,
-                };
-
-                table.Controls.Add(linkLabel, 0, index);
-                table.Controls.Add(label1, 1, index);
-                table.Controls.Add(label2, 2, index);
-
-                linkLabel.LinkClicked += (sender, args) =>
+                title.Links.Add(new LinkLabel.Link(0, title.Text.Length, items[i].Links[0].Uri.ToString()));
+                title.LinkClicked += (sender, args) =>
                 {
                     var target = args.Link.LinkData as string;
                     Process.Start(new ProcessStartInfo("cmd", $"/c start {target}"));
                 };
 
+                var date = new Label
+                {
+                    Text = items[i].PublishDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Dock = DockStyle.Fill,
+                    BorderStyle = BorderStyle.Fixed3D
+                };
+                
+                var description = new Button
+                {
+                    Text = "Показать",
+                    Dock = DockStyle.Fill,
+                };
+                description.MouseClick += (sender, args)
+                    => new Description(items[i].Summary.Text).Show();
 
-                label2.MouseClick += (sender, args)
-                    => new Description(item.Summary.Text).Show();
-
-                index++;
+                table.Controls.Add(title, 0, i);
+                table.Controls.Add(date, 1, i);
+                table.Controls.Add(description, 2, i);
             }
         }
 
@@ -78,7 +74,6 @@ namespace RssReader
                         rssFeed.Url = frm.Input;
                 }
             };
-
 
             var editInterval = new ToolStripMenuItem()
             {
@@ -116,18 +111,17 @@ namespace RssReader
         private void InitializeTable()
         {
             rssFeed = new RssFeed();
-
             table = new TableLayoutPanel();
             table.AutoScroll = true;
-            table.RowStyles.Clear();
+            table.RowStyles.Clear(); 
 
-            for (int i = 0; i <= rssFeed.Feed.Items.Count(); i++)
+            var count = rssFeed.Feed.Items.Count();
+            for (int i = 0; i <= count; i++)
             {
                 table.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
             }
 
-            var fst = new ColumnStyle(SizeType.Percent, 33);
-            table.ColumnStyles.Add(fst);
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
 

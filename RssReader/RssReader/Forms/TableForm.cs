@@ -12,7 +12,6 @@ namespace RssReader
 {
     public partial class TableForm : Form
     {
-        private LinkLabel linkLabel;
         private TableLayoutPanel table;
         private MenuStrip mainMenu;
         private RssFeed rssFeed;

@@ -4,7 +4,7 @@ namespace RssReader
 {
     public partial class InputBoxForm : Form
     {
-        public string Input { get; set; }
+        public string Input { get; private set; }
 
         public InputBoxForm(string message)
         {

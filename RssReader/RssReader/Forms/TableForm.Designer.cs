@@ -42,12 +42,8 @@ namespace RssReader
             {
                 using (var frm = new InputBoxForm("Введите ссылку:"))
                 {
-                    var x = frm.ShowDialog();
-                    if (x == DialogResult.OK)
+                   if (frm.ShowDialog() == DialogResult.OK)
                         url = frm.Input;
-                    
-                    if (x == DialogResult.Yes)
-                        new TableForm().Show();
                 }
             };
 
@@ -58,9 +54,22 @@ namespace RssReader
                 Tag = "Edit Refresh Time"
             };
 
+            var menuItem3 = new ToolStripMenuItem()
+            {
+                Text = "Добавить ленту",
+                Tag = "Add Feed"
+            };
+            
+            menuItem3.Click += (sender, args) =>
+            {
+                var result = MessageBox.Show("Добавить ленту?", "", MessageBoxButtons.OK);
+                if (result == DialogResult.OK)
+                    new TableForm().Show();
+            };
 
             mainMenu.Items.Add(menuItem1);
             mainMenu.Items.Add(menuItem2);
+            mainMenu.Items.Add(menuItem3);
 
             table = new TableLayoutPanel();
             table.AutoScroll = true;

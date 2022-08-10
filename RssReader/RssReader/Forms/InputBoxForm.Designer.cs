@@ -55,15 +55,9 @@ namespace RssReader
             };
             var button = new Button
             {
-                Text = "Изменить эту",
+                Text = "Ок",
                 Dock = DockStyle.Fill,
                 DialogResult = DialogResult.OK
-            };
-            var button1 = new Button
-            {
-                Text = "Добавить новую ленту",
-                Dock = DockStyle.Fill,
-                DialogResult = DialogResult.Yes
             };
 
             var table = new TableLayoutPanel();
@@ -80,7 +74,6 @@ namespace RssReader
             table.Controls.Add(label, 0, 1);
             table.Controls.Add(box, 0, 2);
             table.Controls.Add(button, 0, 3);
-            table.Controls.Add(button1, 0, 4);
             table.Controls.Add(new Panel(), 0, 5);
 
             table.Dock = DockStyle.Fill;

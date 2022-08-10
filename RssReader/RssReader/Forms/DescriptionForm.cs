@@ -4,7 +4,7 @@ namespace RssReader
 {
     public partial class Description : Form
     {
-        private WebBrowser webBrowser1;
+        private WebBrowser webBrowser;
 
         public Description(string text)
         {

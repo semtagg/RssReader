@@ -12,12 +12,11 @@ namespace RssReader
 {
     public partial class TableForm : Form
     {
-        private LinkLabel linkLabel1;
-        private Button label2;
-        private WebBrowser webBrowser1;
+        private LinkLabel linkLabel;
         private TableLayoutPanel table;
-        private ConfigurationModel configurationModel;
         private MenuStrip mainMenu;
+        private RssFeed rssFeed;
+        private Timer timer;
 
         public TableForm()
         {

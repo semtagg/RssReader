@@ -17,6 +17,13 @@ namespace RssReader
     {
         private void InitializeComponent(string text)
         {
+            //var index = 0;
+            var button = new Button()
+            {
+                Text = "Изменить стиль отображения"
+            };
+            Controls.Add(button);
+            
             webBrowser = new WebBrowser();
             this.SuspendLayout();
             webBrowser.Dock = DockStyle.Fill;

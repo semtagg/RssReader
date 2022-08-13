@@ -85,7 +85,7 @@ namespace RssReader
                 using (var frm = new InputBoxForm("Введите новую чатоту:"))
                 {
                     if (frm.ShowDialog() == DialogResult.OK)
-                        timer.Interval = 1000 * int.Parse(frm.Input);
+                        timer.Interval = rssFeed.Interval = 1000 * 60 * int.Parse(frm.Input);
                 }
             };
 

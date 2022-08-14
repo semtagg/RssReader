@@ -1,5 +1,4 @@
-﻿using System;
-using System.ServiceModel.Syndication;
+﻿using System.ServiceModel.Syndication;
 using System.Xml;
 
 namespace RssReader

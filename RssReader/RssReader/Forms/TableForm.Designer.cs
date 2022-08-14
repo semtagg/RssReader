@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
-using System.ServiceModel.Syndication;
 using System.Diagnostics;
-using System.IO;
-using System.Text.Json;
 
 namespace RssReader
 {
@@ -89,7 +79,10 @@ namespace RssReader
                 using (var frm = new InputBoxForm("Введите новую чатоту:"))
                 {
                     if (frm.ShowDialog() == DialogResult.OK)
-                        timer.Interval = rssFeed.Interval = 1000 * 60 * int.Parse(frm.Input);
+                    {
+                        if (int.TryParse(frm.Input, out var temp))
+                            timer.Interval = rssFeed.Interval = 1000 * 60 * temp;
+                    }
                 }
             };
 

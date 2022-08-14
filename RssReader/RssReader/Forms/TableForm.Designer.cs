@@ -46,9 +46,13 @@ namespace RssReader
                 {
                     Text = "Показать",
                     Dock = DockStyle.Fill,
+                    TabIndex = i
                 };
-                description.MouseClick += (sender, args)
-                    => new Description(items[i].Summary.Text).Show();
+                description.MouseClick += (sender, args) =>
+                {
+                    var y = sender as Button;
+                    new Description(items[y.TabIndex].Summary.Text).Show();
+                };
 
                 table.Controls.Add(title, 0, i);
                 table.Controls.Add(date, 1, i);
@@ -118,7 +122,7 @@ namespace RssReader
             var count = rssFeed.Feed.Items.Count();
             for (int i = 0; i <= count; i++)
             {
-                table.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
+                table.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
             }
 
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));

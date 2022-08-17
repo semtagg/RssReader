@@ -22,7 +22,7 @@ namespace RssReader
                 DialogResult = DialogResult.OK
             };
 
-            var table = new TableLayoutPanel();
+            table = new TableLayoutPanel();
             table.RowStyles.Clear();
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
             table.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));

@@ -30,9 +30,9 @@ namespace RssReader
             this.textBox = new TextBox();
             textBox.AcceptsReturn = true;
             textBox.AcceptsTab = true;
-            textBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            textBox.Dock = DockStyle.Fill;
             textBox.Multiline = true;
-            textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            textBox.ScrollBars = ScrollBars.Vertical;
             textBox.ReadOnly = true;
             textBox.Text = text;
             table.Controls.Add(textBox, 0, 1);
@@ -79,9 +79,8 @@ namespace RssReader
             Controls.Add(mainMenu);
         }
 
-        private void InitializeComponent(string text)
+        private void InitializeTable(string text)
         {
-            InitializeMainMenu(text);
             table = new TableLayoutPanel();
             table.AutoScroll = true;
             table.RowStyles.Clear(); 
@@ -90,6 +89,12 @@ namespace RssReader
             table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
             ShowBox(text);
             table.Dock = DockStyle.Fill;
+        }
+
+        private void InitializeComponent(string text)
+        {
+            InitializeMainMenu(text);
+            InitializeTable(text);
             Controls.Add(table);
         }
     }

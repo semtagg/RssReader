@@ -9,7 +9,6 @@ namespace RssReader
         private void ShowWeb(string text)
         {
             webBrowser = new WebBrowser();
-            this.SuspendLayout();
             webBrowser.Dock = DockStyle.Fill;
             webBrowser.Location = new Point(0, 30);
             webBrowser.MinimumSize = new Size(20, 20);
@@ -22,33 +21,21 @@ namespace RssReader
                 Process.Start(new ProcessStartInfo("cmd", $"/c start {args.Url.ToString()}"));
                 args.Cancel = true;
             };
-
-            AutoScaleDimensions = new SizeF(6F, 13F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(334, 311);
-            Controls.Add(this.webBrowser);
-            Name = "Description";
-            Text = "Description";
-            ResumeLayout(false);
+            
+            table.Controls.Add(webBrowser, 0, 1);
         }
 
         private void ShowBox(string text)
         {
-            this.textBox = new System.Windows.Forms.TextBox();
-            textBox.Location = new Point(0, 30);
-            this.SuspendLayout();
-            this.textBox.AcceptsReturn = true;
-            this.textBox.AcceptsTab = true;
-            this.textBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox.Multiline = true;
-            this.textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox = new TextBox();
+            textBox.AcceptsReturn = true;
+            textBox.AcceptsTab = true;
+            textBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            textBox.Multiline = true;
+            textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             textBox.ReadOnly = true;
             textBox.Text = text;
-            this.ClientSize = new System.Drawing.Size(284, 264);
-            this.Controls.Add(this.textBox);
-            this.Text = "TextBox Example";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            table.Controls.Add(textBox, 0, 1);
         }
 
         private void InitializeMainMenu(string text)
@@ -64,6 +51,11 @@ namespace RssReader
             };
             formated.Click += (sender, args) =>
             {
+                while (table.Controls.Count > 0)
+                {
+                    table.Controls[0].Dispose();
+                }
+                table.Controls.Clear();
                 ShowWeb(text);
             };
 
@@ -74,6 +66,11 @@ namespace RssReader
             };
             notFormated.Click += (sender, args) =>
             {
+                while (table.Controls.Count > 0)
+                {
+                    table.Controls[0].Dispose();
+                }
+                table.Controls.Clear();
                 ShowBox(text);
             };
 
@@ -85,7 +82,15 @@ namespace RssReader
         private void InitializeComponent(string text)
         {
             InitializeMainMenu(text);
+            table = new TableLayoutPanel();
+            table.AutoScroll = true;
+            table.RowStyles.Clear(); 
+            table.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
+            table.RowStyles.Add(new RowStyle(SizeType.Absolute, 100));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
             ShowBox(text);
+            table.Dock = DockStyle.Fill;
+            Controls.Add(table);
         }
     }
 }
